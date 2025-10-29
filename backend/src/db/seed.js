@@ -3,6 +3,7 @@ const pool = require('./connection');
 const fs = require('fs');
 const path = require('path');
 
+// Fallback mock products if FakeStore API fails
 const mockProducts = [
   {
     name: 'Wireless Headphones',
@@ -54,6 +55,44 @@ const mockProducts = [
   }
 ];
 
+/**
+ * Fetch products from FakeStore API
+ * @returns {Promise<Array>} Array of transformed products
+ */
+async function fetchProductsFromFakeStore() {
+  try {
+    console.log('Fetching products from FakeStore API...');
+    const response = await fetch('https://fakestoreapi.com/products');
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const products = await response.json();
+    
+    if (!Array.isArray(products) || products.length === 0) {
+      throw new Error('Invalid response from FakeStore API');
+    }
+    
+    // Transform FakeStore API response to match database schema
+    // Limit to 5-10 products as specified
+    const limit = Math.min(10, Math.max(5, products.length));
+    const transformedProducts = products.slice(0, limit).map(product => ({
+      name: product.title,
+      price: parseFloat(product.price),
+      description: product.description || 'No description available',
+      image_url: product.image
+    }));
+    
+    console.log(`Successfully fetched ${transformedProducts.length} products from FakeStore API`);
+    return transformedProducts;
+  } catch (error) {
+    console.error('Error fetching from FakeStore API:', error.message);
+    console.log('Falling back to mock products...');
+    return null;
+  }
+}
+
 async function seedDatabase() {
   try {
     // Verify DATABASE_URL is set
@@ -92,15 +131,23 @@ async function seedDatabase() {
     // Clear existing products
     await pool.query('DELETE FROM products');
     
-    // Insert mock products
-    for (const product of mockProducts) {
+    // Try to fetch products from FakeStore API, fallback to mock products
+    let productsToSeed = await fetchProductsFromFakeStore();
+    
+    if (!productsToSeed) {
+      console.log('Using fallback mock products');
+      productsToSeed = mockProducts;
+    }
+    
+    // Insert products
+    for (const product of productsToSeed) {
       await pool.query(
         'INSERT INTO products (name, price, description, image_url) VALUES ($1, $2, $3, $4)',
         [product.name, product.price, product.description, product.image_url]
       );
     }
     
-    console.log(`Seeded ${mockProducts.length} products successfully`);
+    console.log(`Seeded ${productsToSeed.length} products successfully`);
     await pool.end();
     process.exit(0);
   } catch (error) {
