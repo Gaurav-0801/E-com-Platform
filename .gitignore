@@ -1,0 +1,13 @@
+node_modules/
+.env
+.DS_Store
+*.log
+dist/
+build/
+.vite/
+.env.local
+.env.production
+backend/node_modules/
+frontend/node_modules/
+backend/.env
+frontend/.env
