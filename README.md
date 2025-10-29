@@ -236,9 +236,11 @@ This project is created for Vibe Commerce screening assignment.
 
 ## Author
 
-[Your Name]
+GAURAV PANT
 
 ---
 
 **Note**: This is a mock e-commerce application. No real payments are processed. The checkout is for demonstration purposes only.
 #
+<img width="2555" height="1266" alt="image" src="https://github.com/user-attachments/assets/92b96a11-3536-43a8-9efa-82df474f9190" />
+
