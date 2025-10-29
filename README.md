@@ -212,7 +212,10 @@ The application uses a mock user ID (`user_123`) for cart persistence. All cart 
 
 ## Screenshots
 
-(Add screenshots here showing the application in action)
+<img width="2555" height="1266" alt="image" src="https://github.com/user-attachments/assets/92b96a11-3536-43a8-9efa-82df474f9190" />
+<img width="2559" height="1265" alt="image" src="https://github.com/user-attachments/assets/7f1fb5da-f157-4b3d-b83b-8b3af835ecc8" />
+<img width="2559" height="1272" alt="image" src="https://github.com/user-attachments/assets/4771d857-8ef2-489e-843d-872e752aa4c7" />
+<img width="2549" height="1264" alt="image" src="https://github.com/user-attachments/assets/abc7cf80-4099-429a-840a-3f91aa08684b" />
 
 ## Development Notes
 
@@ -242,10 +245,8 @@ GAURAV PANT
 
 **Note**: This is a mock e-commerce application. No real payments are processed. The checkout is for demonstration purposes only.
 #
-<img width="2555" height="1266" alt="image" src="https://github.com/user-attachments/assets/92b96a11-3536-43a8-9efa-82df474f9190" />
-<img width="2559" height="1265" alt="image" src="https://github.com/user-attachments/assets/7f1fb5da-f157-4b3d-b83b-8b3af835ecc8" />
-<img width="2559" height="1272" alt="image" src="https://github.com/user-attachments/assets/4771d857-8ef2-489e-843d-872e752aa4c7" />
-<img width="2549" height="1264" alt="image" src="https://github.com/user-attachments/assets/abc7cf80-4099-429a-840a-3f91aa08684b" />
+
+
 
 
 
