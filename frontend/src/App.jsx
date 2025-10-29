@@ -20,11 +20,25 @@ function App() {
   const loadProducts = async () => {
     try {
       const response = await productsAPI.getAll();
-      setProducts(response.data.data);
-      setError(null);
+      console.log('Products API Response:', response);
+      console.log('Response data:', response.data);
+      
+      // Check if response has the expected structure
+      if (response.data && response.data.data && Array.isArray(response.data.data)) {
+        setProducts(response.data.data);
+        setError(null);
+      } else if (response.data && Array.isArray(response.data)) {
+        // Handle case where data might be directly in response.data
+        setProducts(response.data);
+        setError(null);
+      } else {
+        console.error('Unexpected response structure:', response.data);
+        setError('Invalid response format from server.');
+      }
     } catch (err) {
       setError('Failed to load products. Please try again.');
       console.error('Error loading products:', err);
+      console.error('Error response:', err.response?.data);
     } finally {
       setLoading(false);
     }
@@ -33,10 +47,21 @@ function App() {
   const loadCart = async () => {
     try {
       const response = await cartAPI.get();
-      setCartItems(response.data.data.items);
-      setCartTotal(response.data.data.total);
+      console.log('Cart API Response:', response);
+      
+      if (response.data && response.data.data) {
+        setCartItems(response.data.data.items || []);
+        setCartTotal(response.data.data.total || 0);
+      } else {
+        console.error('Unexpected cart response structure:', response.data);
+        setCartItems([]);
+        setCartTotal(0);
+      }
     } catch (err) {
       console.error('Error loading cart:', err);
+      console.error('Error response:', err.response?.data);
+      setCartItems([]);
+      setCartTotal(0);
     }
   };
 
