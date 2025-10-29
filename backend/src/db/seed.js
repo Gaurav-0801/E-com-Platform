@@ -128,8 +128,15 @@ async function seedDatabase() {
     
     console.log('Database schema created successfully');
 
-    // Clear existing products
+    // Clear existing data in correct order to avoid foreign key constraint violations
+    // Delete orders first (this will cascade delete order_items due to ON DELETE CASCADE)
+    await pool.query('DELETE FROM orders');
+    // Delete cart items (will cascade automatically, but being explicit for clarity)
+    await pool.query('DELETE FROM cart_items');
+    // Now safe to delete products
     await pool.query('DELETE FROM products');
+    
+    console.log('Cleared existing data successfully');
     
     // Try to fetch products from FakeStore API, fallback to mock products
     let productsToSeed = await fetchProductsFromFakeStore();
