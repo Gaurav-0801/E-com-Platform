@@ -18,14 +18,20 @@ const normalizedFrontendUrl = frontendUrl.replace(/\/$/, '');
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
+    if (!origin) {
+      return callback(null, true);
+    }
     
     // Normalize origin by removing trailing slash
     const normalizedOrigin = origin.replace(/\/$/, '');
     
+    // Debug logging (remove in production if needed)
+    console.log(`CORS check - Origin: ${origin}, Normalized: ${normalizedOrigin}, Expected: ${normalizedFrontendUrl}`);
+    
     if (normalizedOrigin === normalizedFrontendUrl) {
       callback(null, true);
     } else {
+      console.error(`CORS blocked: Origin "${normalizedOrigin}" does not match "${normalizedFrontendUrl}"`);
       callback(new Error('Not allowed by CORS'));
     }
   },
